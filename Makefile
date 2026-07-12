@@ -1,24 +1,20 @@
 TARGET = fib
-CC = gcc
+CC = cc
 CFLAGS = -std=c17 -Wall -Wextra -Wpedantic
 DEBUG_FLAGS = -Og -g -fsanitize=address -fsanitize=undefined
-RELEASE_FLAGS = -O2
-
-SRCS = $(wildcard *.c)
+RELEASE_FLAGS = -O2 -DNDEBUG
 
 all: release
 
 release: $(TARGET)
 
-$(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) $(RELEASE_FLAGS) -o $@ $^
+$(TARGET): fib.c
+	$(CC) $(CFLAGS) $(RELEASE_FLAGS) -o $@ fib.c
 
-debug: $(TARGET)_debug
-
-$(TARGET)_debug: $(SRCS)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -o $@ $^
+debug: fib.c
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -o $(TARGET)_debug fib.c
 
 clean:
-	rm -f $(TARGET) $(TARGET)_debug
+	rm -f $(TARGET) $(TARGET)_debug *.dSYM
 
 .PHONY: all release debug clean
