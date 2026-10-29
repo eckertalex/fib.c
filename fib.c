@@ -6,12 +6,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef int64_t s64;
+#define internal static
+#define global static
+#define local_persist static
+
+typedef int64_t i64;
 typedef uint64_t u64;
 
-#define FIB_MAX 92
+constexpr i64 FIB_MAX = 92;
 
-static bool read_line(char *buffer, int size) {
+internal bool read_line(char *buffer, int size) {
     if(!fgets(buffer, size, stdin)) {
         return false;
     }
@@ -25,7 +29,7 @@ static bool read_line(char *buffer, int size) {
     return true;
 }
 
-static char *skip_whitespace(char *s) {
+internal char *skip_whitespace(char *s) {
     while(isspace((unsigned char)*s)) {
         s++;
     }
@@ -33,7 +37,7 @@ static char *skip_whitespace(char *s) {
     return s;
 }
 
-static bool parse_s64(char *s, s64 *out) {
+internal bool parse_i64(char *s, i64 *out) {
     s = skip_whitespace(s);
 
     if(*s == '\0') {
@@ -53,11 +57,11 @@ static bool parse_s64(char *s, s64 *out) {
         return false;
     }
 
-    *out = (s64)value;
+    *out = (i64)value;
     return true;
 }
 
-static s64 fib(s64 n) {
+internal i64 fib(i64 n) {
     assert(n >= 0);
     assert(n <= FIB_MAX);
 
@@ -65,11 +69,11 @@ static s64 fib(s64 n) {
         return 0;
     }
 
-    s64 a = 0;
-    s64 b = 1;
+    i64 a = 0;
+    i64 b = 1;
 
-    for(s64 i = 1; i < n; i++) {
-        s64 next = a + b;
+    for(i64 i = 1; i < n; i++) {
+        i64 next = a + b;
         a = b;
         b = next;
     }
@@ -77,7 +81,7 @@ static s64 fib(s64 n) {
     return b;
 }
 
-static void test_fib(void) {
+internal void test_fib(void) {
     assert(fib(0) == 0);
     assert(fib(1) == 1);
     assert(fib(2) == 1);
@@ -102,19 +106,19 @@ int main(void) {
             break;
         }
 
-        s64 n;
+        i64 n;
 
-        if(!parse_s64(buffer, &n)) {
+        if(!parse_i64(buffer, &n)) {
             printf("bad input\n");
             continue;
         }
 
         if(n < 0 || n > FIB_MAX) {
-            printf("out of range (0..%d)\n", FIB_MAX);
+            printf("out of range (0..%lld)\n", FIB_MAX);
             continue;
         }
 
-        s64 result = fib(n);
+        i64 result = fib(n);
 
         printf("fib(%" PRId64 ") = %" PRId64 "\n", n, result);
     }

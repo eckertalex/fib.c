@@ -6,16 +6,19 @@ largest range that fits in a signed 64-bit integer. Negative indices use
 F(-n) = (-1)^(n+1) F(n).
 
 ```sh
-./fib
+./build/fib
 >> 10
 fib(10) = 55
 >> q
 ```
 
-Build with make:
+## Build
+
+`build.sh` builds into `build/`. No make, no build system.
 
 ```sh
-make          # optimized release binary (-O2)
-make debug    # debug binary with AddressSanitizer + UBSan
-make clean
+./build.sh            # debug, with AddressSanitizer and UBSan
+./build.sh release    # optimized (-O2)
+./build.sh run        # build and run in one step
+./build.sh gcc        # clang is the default, also takes gcc or cc
 ```
